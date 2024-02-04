@@ -94,7 +94,13 @@ func postSearchHistory(c *gin.Context) {
 			return
 		}
 
-		c.IndentedJSON(http.StatusOK, result)
+		response := SearchHistoryResponse{
+			ID:      result.ID,
+			Content: result.Content,
+			Date:    result.Date,
+		}
+
+		c.IndentedJSON(http.StatusOK, response)
 	}
 
 }

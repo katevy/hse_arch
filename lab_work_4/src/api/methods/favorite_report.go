@@ -68,6 +68,8 @@ func postFavoriteReport(c *gin.Context) {
 		return
 	}
 
+	log.Print(favoriteReportPostBody)
+
 	newFavoriteReport = models.FavoriteReport{
 		ID:       0,
 		UserID:   1,
@@ -89,7 +91,12 @@ func postFavoriteReport(c *gin.Context) {
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, result)
+	response := FavoriteReportResponse{
+		ID:       result.ID,
+		ReportID: result.ReportID,
+	}
+
+	c.IndentedJSON(http.StatusOK, response)
 }
 
 func getFavoriteReportByID(c *gin.Context) {
@@ -119,6 +126,7 @@ func getFavoriteReportByID(c *gin.Context) {
 	}
 
 	response := FavoriteReportResponse{
+		ID:       result.ID,
 		ReportID: result.ReportID,
 	}
 
