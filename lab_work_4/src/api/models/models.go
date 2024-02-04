@@ -22,17 +22,17 @@ func (s SearchHistory) String() string {
 	return fmt.Sprintf("ID: %d, UserID: %d, Content: %s, Date: %s", s.ID, s.UserID, s.Content, s.Date)
 }
 
-type FavoriteReports struct {
+type FavoriteReport struct {
 	ID       int
 	UserID   int
-	ReportId int
+	ReportID int
 }
 
 type FinancialReport struct {
-	ID              int
-	Title           string
-	ReportContentID int
-	Date            time.Time
+	ID      int
+	Title   string
+	Content string
+	Date    time.Time
 }
 
 type ReportAnalysis struct {

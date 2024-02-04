@@ -68,6 +68,17 @@ func (db *SQLiteDB) GetSearchHistoryByID(id int) (*models.SearchHistory, error) 
 
 func (db *SQLiteDB) UpdateSearchHistory(history *models.SearchHistory) error {
 
+	var count int
+	checkQuery := `SELECT COUNT(*) FROM serch_history WHERE user_id = ? AND id = ?`
+	getErr := db.DB.Get(&count, checkQuery, 1, history.ID)
+	if getErr != nil {
+		return getErr
+	}
+
+	if count == 0 {
+		return errors.New("record not found")
+	}
+
 	q := `UPDATE serch_history SET content = ?, date = ? WHERE user_id = ? AND id = ?`
 
 	_, err := db.DB.Exec(q, history.Content, history.Date, 1, history.ID)
@@ -76,8 +87,6 @@ func (db *SQLiteDB) UpdateSearchHistory(history *models.SearchHistory) error {
 	}
 	return nil
 }
-
-//TODO добавить проверку на наличие записи, возвращать ошибку если уже удалили
 
 func (db *SQLiteDB) DeleteSearchHistory(id int) error {
 
