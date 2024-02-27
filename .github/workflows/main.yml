@@ -27,5 +27,4 @@ jobs:
 
       - name: Build and push Docker images
         run: |
-          cd lab_work_5/src
           docker-compose build
