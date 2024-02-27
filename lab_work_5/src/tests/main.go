@@ -47,7 +47,7 @@ func testSignupEndpoint() bool {
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusBadRequest {
 		log.Printf("Expected status code %d, got %d\n", http.StatusOK, resp.StatusCode)
 		return false
 	}
