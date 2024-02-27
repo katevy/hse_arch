@@ -34,7 +34,7 @@ func testSignupEndpoint() bool {
 	}
 	userBytes, _ := json.Marshal(user)
 
-	req, err := http.NewRequest("POST", "http://localhost:8082/signup", bytes.NewBuffer(userBytes))
+	req, err := http.NewRequest("POST", "http://host.docker.internal:8082/signup", bytes.NewBuffer(userBytes))
 	if err != nil {
 		log.Println(err)
 		return false
@@ -74,7 +74,7 @@ func testLoginEndpoint() bool {
 	}
 	userBytes, _ := json.Marshal(user)
 
-	req, err := http.NewRequest("POST", "http://localhost:8082/login", bytes.NewBuffer(userBytes))
+	req, err := http.NewRequest("POST", "http://host.docker.internal:8082/login", bytes.NewBuffer(userBytes))
 	if err != nil {
 		log.Println(err)
 		return false
