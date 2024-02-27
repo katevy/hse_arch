@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_DATABASE: test
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_REPLICA_PORT: 27017
+    expose:
+      - 27017
+    networks:
+      - api
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+      ME_CONFIG_MONGODB_URL: mongodb://root:admin@mongo:27017/
+
+  auth:
+    build:
+      context: ./auth
+    container_name: auth
+    ports:
+      - "8082:8082"
+    environment:
+      - PORT=8082
+    expose:
+      - 8082
+    depends_on:
+      - mongo
+    networks:
+      - api
+
+  server:
+    build:
+      context: ./api
+    container_name: api_backend
+    ports:
+      - "8083:8083"
+    environment:
+      - PORT=8083
+    expose:
+      - 8083
+    networks:
+      - api
+
+  getaway:
+    build:
+      context: ./api_getaway
+    container_name: getaway
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+    expose:
+      - 8080
+    depends_on:
+      - server
+      - auth
+    networks:
+      - api
+
+  client:
+    build:
+      context: ./client
+    container_name: client_frontend
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
+    depends_on:
+      - server
+
+networks:
+  api:
+    driver: bridge
