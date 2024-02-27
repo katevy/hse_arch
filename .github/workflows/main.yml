@@ -27,4 +27,4 @@ jobs:
 
       - name: Build and push Docker images
         run: |
-          docker-compose build
+          docker-compose -f lab_work_5/src/Docker-compose.yml build
