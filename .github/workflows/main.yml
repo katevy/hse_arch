@@ -16,7 +16,7 @@ jobs:
       - name: Build and test
         run: |
           docker-compose -f lab_work_5/src/Docker-compose.yml up -d
-          sh lab_work_5/src/test/run.sh
+          sh lab_work_5/src/tests/run.sh
           # docker-compose -f docker-compose.yml exec auth npm test
           # Дополните этот шаг, чтобы запустить тесты вашего приложения
 
