@@ -10,13 +10,14 @@ COPY . .
 RUN go mod download
 RUN go build -o ./auth main.go
 
-FROM alpine:latest
+# FROM alpine:latest
 
-RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+# RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 
-RUN mkdir -p /app
-WORKDIR /app
-COPY --from=build /app/auth .
+# RUN mkdir -p /app
+# WORKDIR /app
+# COPY --from=build /app/auth .
+# RUN apk add --no-cache bash go gcc libc-dev
 
 EXPOSE 8082
 
