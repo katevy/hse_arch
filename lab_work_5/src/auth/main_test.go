@@ -3,78 +3,82 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
-	"regexp"
+	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func TestSignupEndpoint(t *testing.T) {
+func TestLoginEndpoint(t *testing.T) {
+	// Создаем фейковый сервер
+	router := setupRouter()
+
+	// Подготовка данных для теста
 	user := map[string]string{
 		"username": "testuser",
 		"password": "testpassword",
 	}
 	userBytes, _ := json.Marshal(user)
 
-	req, err := http.NewRequest("POST", "http://host.docker.internal:8082/signup", bytes.NewBuffer(userBytes))
+	// Создаем запрос POST к /login с тестовыми данными
+	req, err := http.NewRequest("POST", "/login", bytes.NewBuffer(userBytes))
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer resp.Body.Close()
+	// Создаем ResponseRecorder (как фейковый клиент), чтобы записать ответ
+	rr := httptest.NewRecorder()
 
-	if resp.StatusCode != http.StatusBadRequest {
-		t.Errorf("Expected status code %d, got %d", http.StatusOK, resp.StatusCode)
-	}
+	// Мы передаем наш запрос и ResponseRecorder на наш роутер, чтобы выполнить запрос
+	router.ServeHTTP(rr, req)
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		t.Fatal(err)
-	}
+	// Проверяем код статуса
+	assert.Equal(t, http.StatusOK, rr.Code)
 
-	expected := `{"message":"User created successfully"}`
-	if string(body) != expected {
-		t.Errorf("Expected response %s, got %s", expected, string(body))
-	}
+	// Проверяем ответ
+	expected := `{"token":`
+	assert.Contains(t, rr.Body.String(), expected)
 }
 
-func TestLoginEndpoint(t *testing.T) {
+func TestSignupEndpoint(t *testing.T) {
+	// Создаем фейковый сервер
+	router := setupRouter()
+
+	// Подготовка данных для теста
 	user := map[string]string{
 		"username": "testuser",
 		"password": "testpassword",
 	}
 	userBytes, _ := json.Marshal(user)
 
-	req, err := http.NewRequest("POST", "http://host.docker.internal:8082/login", bytes.NewBuffer(userBytes))
+	// Создаем запрос POST к /signup с тестовыми данными
+	req, err := http.NewRequest("POST", "/signup", bytes.NewBuffer(userBytes))
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer resp.Body.Close()
+	// Создаем ResponseRecorder (как фейковый клиент), чтобы записать ответ
+	rr := httptest.NewRecorder()
 
-	if resp.StatusCode != http.StatusOK {
-		t.Errorf("Expected status code %d, got %d", http.StatusOK, resp.StatusCode)
-	}
+	// Мы передаем наш запрос и ResponseRecorder на наш роутер, чтобы выполнить запрос
+	router.ServeHTTP(rr, req)
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		t.Fatal(err)
-	}
+	// Проверяем код статуса
+	assert.Equal(t, http.StatusOK, rr.Code)
 
-	expected := `{"token":.*}`
-	matched, err := regexp.MatchString(expected, string(body))
-	if err != nil {
-		t.Errorf("Error matching string:%s", err)
-	}
-	if !matched {
-		t.Errorf("Expected response %s, got %s", expected, string(body))
-	}
+	// Проверяем ответ
+	expected := `{"message": "User created successfully"}`
+	assert.Contains(t, rr.Body.String(), expected)
+}
+
+// Функция setupRouter создает экземпляр вашего маршрутизатора Gin и возвращает его
+func setupRouter() *gin.Engine {
+	router := gin.Default()
+
+	// Обработчики маршрутов
+	router.POST("/login", login)
+	router.POST("/signup", signup)
+
+	return router
 }
