@@ -5,23 +5,16 @@ go 1.21.5
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/mattn/go-sqlite3 v1.14.20
+	github.com/stretchr/testify v1.8.4
 )
 
 require (
-	dario.cat/mergo v1.0.0 // indirect
-	github.com/bep/godartsass v1.2.0 // indirect
-	github.com/bep/godartsass/v2 v2.0.0 // indirect
-	github.com/bep/golibsass v1.1.1 // indirect
-	github.com/cli/safeexec v1.0.1 // indirect
-	github.com/cosmtrek/air v1.49.0 // indirect
-	github.com/creack/pty v1.1.21 // indirect
-	github.com/fatih/color v1.16.0 // indirect
-	github.com/fsnotify/fsnotify v1.7.0 // indirect
-	github.com/gohugoio/hugo v0.122.0 // indirect
-	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/pelletier/go-toml v1.9.5 // indirect
-	github.com/spf13/afero v1.11.0 // indirect
-	github.com/tdewolff/parse/v2 v2.7.11 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/google/go-cmp v0.6.0 // indirect
+	github.com/kr/pretty v0.3.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/rogpeppe/go-internal v1.12.0 // indirect
+	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 )
 
 require (
