@@ -8,6 +8,7 @@ WORKDIR /app
 COPY . .
 
 RUN go mod download
+RUN go test ./...
 RUN go build -o ./test main.go
 
 FROM alpine:latest
