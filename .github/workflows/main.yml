@@ -29,5 +29,11 @@ jobs:
 
       - name: Build and push Docker images
         run: |
-          docker tag docker.io/library/src_server kataevy/src-server     
-          docker push kataevy/src-server   
+          docker tag docker.io/library/src_server kataevy/src-server
+          docker tag docker.io/library/src_auth kataevy/src_auth
+          docker tag docker.io/library/src_client kataevy/src-client
+          docker tag docker.io/library/src_getaway kataevy/src-getaway
+          docker push kataevy/src-server
+          docker push kataevy/src_auth
+          docker push kataevy/src-client
+          docker push kataevy/src-getaway
