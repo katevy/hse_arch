@@ -1,0 +1,1 @@
+export { CompanyTotalInformation } from './components/CompanyTotalInformation'
